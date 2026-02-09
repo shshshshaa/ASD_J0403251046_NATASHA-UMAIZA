@@ -1,20 +1,20 @@
 # ==========================================================
 # TUGAS HANDS-ON MODUL 1
-# Studi Kasus: Sistem Stok Barang Kantin (Berbasis File .txt)
-#
-# Nama  : Alfitra Mumtaz Hanafi
-# NIM   :
-# Kelas :
+# Studi Kasus: Sistem Stok Barang Koperasi 
 # ==========================================================
 
-# -------------------------------
-# Konstanta nama file
-# -------------------------------
-NAMA_FILE = "stok_barang.txt"
+# ==========================================================
+# Nama  : Natasha Umaiza
+# NIM   :J0403251046
+# Kelas : A/A1
+# ==========================================================
+
+
+NAMA_FILE = "stok_barang.txt"  #penamaan file
 
 
 # -------------------------------
-# Fungsi: Membaca data dari file
+# Membaca data dari file
 # -------------------------------
 def baca_stok(nama_file):
     """
@@ -45,7 +45,7 @@ def baca_stok(nama_file):
 
 
 # -------------------------------
-# Fungsi: Menyimpan data ke file
+# Menyimpan data ke file
 # -------------------------------
 def simpan_stok(nama_file, stok_dict):
     """
@@ -59,7 +59,7 @@ def simpan_stok(nama_file, stok_dict):
 
 
 # -------------------------------
-# Fungsi: Menampilkan semua data
+# Menampilkan semua data
 # -------------------------------
 def tampilkan_semua(stok_dict):
     """
@@ -69,7 +69,7 @@ def tampilkan_semua(stok_dict):
         print("Stok barang kosong.")
         return
 
-    print("\n=== DAFTAR STOK BARANG ===")
+    print("\n=== DAFTAR STOK BARANG KOPERASI ===")
     print(f"{'Kode':<10} | {'Nama':<15} | {'Stok':>5}")
     print("-" * 36)
 
@@ -80,7 +80,7 @@ def tampilkan_semua(stok_dict):
 
 
 # -------------------------------
-# Fungsi: Cari barang berdasarkan kode
+# Mencari barang berdasarkan kode
 # -------------------------------
 def cari_barang(stok_dict):
     """
@@ -97,7 +97,7 @@ def cari_barang(stok_dict):
 
 
 # -------------------------------
-# Fungsi: Tambah barang baru
+# Menambah barang baru
 # -------------------------------
 def tambah_barang(stok_dict):
     """
@@ -121,7 +121,7 @@ def tambah_barang(stok_dict):
 
 
 # -------------------------------
-# Fungsi: Update stok barang
+# Update stok barang
 # -------------------------------
 def update_stok(stok_dict):
     """
@@ -156,7 +156,7 @@ def update_stok(stok_dict):
 
 
 # -------------------------------
-# Program Utama
+# Menu Program Utama (lengkap dari menu)
 # -------------------------------
 def main():
     stok_barang = baca_stok(NAMA_FILE)
@@ -197,4 +197,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
