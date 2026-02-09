@@ -1,10 +1,11 @@
-KOP-001	Roti Isi Cokelat 24
-KOP-002	Air Mineral	 40
-KOP-003	Mi Instan Goreng 85
-KOP-004	Teh Celup	 30
-KOP-005	Kopi Sachet	 18
-KOP-006	Susu UHT Cokelat 26
-KOP-007	Gula Pasir	 34
-KOP-008	Biskuit Wafer	 45
-KOP-009	Pulpen Hitam	 75
-KOP-010	Buku Tulis	 60
+BRG001,Roti Isi Cokelat,24
+BRG002,Air Mineral,40
+BRG003,Mi Instan Goreng,85
+BRG004,Teh Celup,30
+BRG005,Kopi Sachet,18
+BRG006,Susu UHT Cokelat,26
+BRG007,Gula Pasir,34
+BRG008,Biskuit Wafer,45
+BRG009,Pulpen Hitam,75
+BRG010,Buku Tulis,60
+BRG011,Molen,7

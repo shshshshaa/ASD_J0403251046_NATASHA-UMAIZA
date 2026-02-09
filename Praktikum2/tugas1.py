@@ -1,201 +1,173 @@
-# ==========================================================
-# TUGAS HANDS-ON MODUL 1
-# Studi Kasus: Sistem Stok Barang Koperasi 
-# ==========================================================
+import os
 
 # ==========================================================
-# Nama  : Natasha Umaiza
-# NIM   :J0403251046
-# Kelas : A/A1
+# PATH FILE (AMAN MESKI PINDAH PC / FOLDER)
 # ==========================================================
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FILE_STOK = os.path.join(BASE_DIR, "stok_barang.txt")
 
+# ==========================================================
+# BACA DATA DARI FILE
+# ==========================================================
+def baca_stok():
+    stok = {}
 
-NAMA_FILE = "stok_barang.txt"  #penamaan file
+    if not os.path.exists(FILE_STOK):
+        return stok
 
+    with open(FILE_STOK, "r", encoding="utf-8") as file:
+        for baris in file:
+            baris = baris.strip()
+            if not baris:
+                continue
 
-# -------------------------------
-# Membaca data dari file
-# -------------------------------
-def baca_stok(nama_file):
-    """
-    Membaca data stok dari file teks.
-    Format per baris: KodeBarang,NamaBarang,Stok
-    """
-    stok_dict = {}
+            kode, nama, jumlah = baris.split(",")
+            stok[kode] = {
+                "nama": nama,
+                "stok": int(jumlah)
+            }
 
-    try:
-        with open(nama_file, "r", encoding="utf-8") as f:
-            for baris in f:
-                baris = baris.strip()
+    return stok
 
-                if baris == "":
-                    continue
+# ==========================================================
+# SIMPAN DATA KE FILE
+# ==========================================================
+def simpan_stok(stok):
+    with open(FILE_STOK, "w", encoding="utf-8") as file:
+        for kode, data in stok.items():
+            file.write(f"{kode},{data['nama']},{data['stok']}\n")
 
-                kode, nama, stok_str = baris.split(",")
-
-                stok_dict[kode] = {
-                    "nama": nama,
-                    "stok": int(stok_str)
-                }
-
-    except FileNotFoundError:
-        pass
-
-    return stok_dict
-
-
-# -------------------------------
-# Menyimpan data ke file
-# -------------------------------
-def simpan_stok(nama_file, stok_dict):
-    """
-    Menyimpan seluruh data stok ke file teks.
-    """
-    with open(nama_file, "w", encoding="utf-8") as f:
-        for kode in stok_dict:
-            nama = stok_dict[kode]["nama"]
-            stok = stok_dict[kode]["stok"]
-            f.write(f"{kode},{nama},{stok}\n")
-
-
-# -------------------------------
-# Menampilkan semua data
-# -------------------------------
-def tampilkan_semua(stok_dict):
-    """
-    Menampilkan semua barang di stok_dict.
-    """
-    if len(stok_dict) == 0:
+# ==========================================================
+# TAMPILKAN SEMUA BARANG
+# ==========================================================
+def tampilkan_semua(stok): #fungsi untuk menampilkan semua daftar barang dan stok nya
+    if not stok:
         print("Stok barang kosong.")
         return
 
     print("\n=== DAFTAR STOK BARANG KOPERASI ===")
-    print(f"{'Kode':<10} | {'Nama':<15} | {'Stok':>5}")
-    print("-" * 36)
+    print(f"{'Kode':<10} {'Nama Barang':<20} {'Stok':>5}")
+    print("-" * 40)
 
-    for kode in stok_dict:
-        nama = stok_dict[kode]["nama"]
-        stok = stok_dict[kode]["stok"]
-        print(f"{kode:<10} | {nama:<15} | {stok:>5}")
+    for kode, data in stok.items():
+        print(f"{kode:<10} {data['nama']:<20} {data['stok']:>5}")
 
-
-# -------------------------------
-# Mencari barang berdasarkan kode
-# -------------------------------
-def cari_barang(stok_dict):
-    """
-    Mencari barang berdasarkan kode barang.
-    """
+# ==========================================================
+# CARI BARANG
+# ==========================================================
+def cari_barang(stok): #fungsi untuk mencari barang berdasarkan kodenya
     kode = input("Masukkan kode barang: ").strip()
 
-    if kode in stok_dict:
+    if kode in stok:
+        print("\nData Barang")
         print("Kode :", kode)
-        print("Nama :", stok_dict[kode]["nama"])
-        print("Stok :", stok_dict[kode]["stok"])
+        print("Nama :", stok[kode]["nama"])
+        print("Stok :", stok[kode]["stok"])
     else:
         print("Barang tidak ditemukan")
 
+# ==========================================================
+# TAMBAH BARANG
+# ==========================================================
+def tambah_barang(stok): #fungsi untuk menambah barang
+    kode = input("Kode barang baru: ").strip()
 
-# -------------------------------
-# Menambah barang baru
-# -------------------------------
-def tambah_barang(stok_dict):
-    """
-    Menambah barang baru ke stok_dict.
-    """
-    kode = input("Masukkan kode barang baru: ").strip()
-    nama = input("Masukkan nama barang: ").strip()
-
-    if kode in stok_dict:
-        print("Kode sudah digunakan")
+    if kode in stok:
+        print("Kode sudah ada!")
         return
 
-    stok_awal = int(input("Masukkan stok awal: "))
+    nama = input("Nama barang: ").strip()
 
-    stok_dict[kode] = {
+    try:
+        jumlah = int(input("Stok awal: "))
+    except ValueError:
+        print("Stok harus angka!")
+        return
+
+    stok[kode] = {
         "nama": nama,
-        "stok": stok_awal
+        "stok": jumlah
     }
 
     print("Barang berhasil ditambahkan")
 
+# ==========================================================
+# UPDATE STOK
+# ==========================================================
+def update_stok(stok): #fungsi untuk menambah atau mengurangi stok barang 
+    kode = input("Kode barang: ").strip()
 
-# -------------------------------
-# Update stok barang
-# -------------------------------
-def update_stok(stok_dict):
-    """
-    Mengubah stok barang (tambah atau kurangi).
-    """
-    kode = input("Masukkan kode barang yang ingin diupdate: ").strip()
-
-    if kode not in stok_dict:
+    if kode not in stok:
         print("Barang tidak ditemukan")
         return
 
-    print("Pilih jenis update:")
     print("1. Tambah stok")
     print("2. Kurangi stok")
+    pilihan = input("Pilih (1/2): ").strip()
 
-    pilihan = input("Masukkan pilihan (1/2): ").strip()
-    jumlah = int(input("Masukkan jumlah: "))
+    try:
+        jumlah = int(input("Jumlah: "))
+    except ValueError:
+        print("Jumlah harus angka!")
+        return
 
     if pilihan == "1":
-        stok_dict[kode]["stok"] += jumlah
-        print("Stok berhasil ditambahkan")
+        stok[kode]["stok"] += jumlah
+        print("Stok berhasil ditambah")
 
     elif pilihan == "2":
-        if stok_dict[kode]["stok"] - jumlah < 0:
-            print("Stok tidak boleh negatif")
-            return
-        stok_dict[kode]["stok"] -= jumlah
-        print("Stok berhasil dikurangi")
+        if stok[kode]["stok"] < jumlah:
+            print("Stok tidak cukup")
+        else:
+            stok[kode]["stok"] -= jumlah
+            print("Stok berhasil dikurangi")
 
     else:
         print("Pilihan tidak valid")
 
-
-# -------------------------------
-# Menu Program Utama (lengkap dari menu)
-# -------------------------------
-def main():
-    stok_barang = baca_stok(NAMA_FILE)
+# ==========================================================
+# PROGRAM UTAMA 
+# ==========================================================
+def main(): #fungsi menu utama untuk menjalankan semua fungsi menjadi sebuah program stok barang
+    stok_barang = baca_stok()
 
     while True:
-        print("\n=== MENU STOK KANTIN ===")
-        print("1. Tampilkan semua barang")
-        print("2. Cari barang berdasarkan kode")
-        print("3. Tambah barang baru")
-        print("4. Update stok barang")
-        print("5. Simpan ke file")
+        print("\n=== MENU STOK KOPERASI ===")
+        print("1. Tampilkan semua")
+        print("2. Cari barang")
+        print("3. Tambah barang")
+        print("4. Update stok")
+        print("5. Simpan data")
         print("0. Keluar")
 
-        pilihan = input("Pilih menu: ").strip()
+        menu = input("Pilih menu: ").strip()
 
-        if pilihan == "1":
+        if menu == "1":
             tampilkan_semua(stok_barang)
 
-        elif pilihan == "2":
+        elif menu == "2":
             cari_barang(stok_barang)
 
-        elif pilihan == "3":
+        elif menu == "3":
             tambah_barang(stok_barang)
 
-        elif pilihan == "4":
+        elif menu == "4":
             update_stok(stok_barang)
 
-        elif pilihan == "5":
-            simpan_stok(NAMA_FILE, stok_barang)
-            print("Data berhasil disimpan.")
+        elif menu == "5":
+            simpan_stok(stok_barang)
+            print("Data berhasil disimpan")
 
-        elif pilihan == "0":
-            print("Program selesai.")
+        elif menu == "0":
+            simpan_stok(stok_barang)
+            print("Program selesai")
             break
 
         else:
-            print("Pilihan tidak valid. Silakan coba lagi.")
+            print("Menu tidak valid")
 
-
-if __name__ == "__main__":
-
+# ==========================================================
+# JALANKAN PROGRAM
+# ==========================================================
+if __name__ == "__main__": 
     main()
